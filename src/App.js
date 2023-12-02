@@ -16,21 +16,42 @@ const files = {
   }
 }
 
+
+
 function App() {
   const [filesname, setfilename] = useState("script.py")
-  const file = files[filesname]
+  
+  const [htmlcontent, sethtmlcontent] = useState('')
+
+  const handlefilechange = () => {
+    setfilename(filesname)
+    sethtmlcontent(files[filesname].value)
+  }
+
+  const handleeditorchange = (value) => {
+    sethtmlcontent(value)
+  }
+
   return (
     <div className="App">
       <header className="App-header">
-        <button onClick={()=>{setfilename("index.html")}}>Swich to HTML</button>
-        <button onClick={()=>{setfilename("script.py")}}>Swich to HTML</button>
+        <button onClick={()=>{handlefilechange("index.html")}}>Swich to HTML</button>
+        <button onClick={()=>{handlefilechange("script.py")}}>Swich to HTML</button>
+
+        <button onClick={()=>{sethtmlcontent(htmlcontent)}}>
+          Render HTML
+        </button>
+        <div dangerouslySetInnerHTML={{__html : htmlcontent}}>
+
+        </div>
         <Editor
         height="100vh"
         width="100%"
         theme='vs-dark'
-        path={file.name}
-        defaultLanguage={file.language}
-        defaultValue={file.value}
+        path={files[filesname].name}
+        defaultLanguage={files[filesname].language}
+        defaultValue={files[filesname].value}
+        onChange={handleeditorchange}
         ></Editor>
       </header>
     </div>
